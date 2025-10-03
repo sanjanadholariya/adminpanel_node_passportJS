@@ -88,7 +88,7 @@
                                     <label for="fname"
                                         class="col-sm-3 text-right control-label col-form-label">Category</label>
                                     <div class="col-sm-9">
-                                        <select name="category" >
+                                        <select name="category" id="category">
                                             <option value="">--- Select Category ---</option>
                                             <%category.map((v,i)=>{%>
                                                 <option value="<%=v._id%>">
@@ -104,14 +104,11 @@
                                         class="col-sm-3 text-right control-label col-form-label">Sub Category</label>
 
                                      <div class="col-sm-9">
-                                        <select name="subcategory" >
+                                        <select name="subcategory" id="subcategory" >
                                             <option value="">--- Select Sub Category ---</option>
-                                            <%subcategory.map((v,i)=>{%>
-                                                <option value="<%=v._id%>">
-                                                    <%=v.subcategory%>
-                                                </option>
+                                            
                                                 
-                                                <%})%>
+                                                
                                         </select>
                                     </div>
                                 </div>
@@ -120,13 +117,9 @@
                                         class="col-sm-3 text-right control-label col-form-label">Extra Category</label>
 
                                      <div class="col-sm-9">
-                                        <select name="extraCategory" >
+                                        <select name="extraCategory" id="extraCategory">
                                             <option value="">--- Select Extra Category ---</option>
-                                            <%extraCategory.map((v,i)=>{%>
-                                                <option value="<%=v._id%>">
-                                                    <%=v.extraCategory%>
-                                                </option>
-                                                <%})%>
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -168,30 +161,71 @@
 
     <%-include('../footer')%>
 
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded',() => {
+    <script>
+        // document.addEventListener('DOMContentLoaded',() => {
+        //     let category = document.querySelector('#category');
+        //     let subcategory = document.querySelector('#subcategory')
+
+        //     console.log(category)
+
+        //     category.addEventListener('change' , () => {
+        //         let categoryId = category.value
+        //         // console.log(categoryId)
+        //         subcategory.innerHTML = `<option>--- select subcategory ---</option>`
+        //         fetch(`/extraCategory/subcategory?category=${categoryId}`)
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             // console.log(data.subcategories)
+        //             data.subcategories.forEach(value => {
+        //                 let option = document.createElement('option');
+        //                 option.value = value._id
+        //                 option.innerHTML = value.subcategory;
+        //                 subcategory.append(option);
+        //             });
+        //         })
+        //         .catch(err => console.log(err));
+        //     })
+
+        // })
+
+        document.addEventListener('DOMContentLoaded',()=>{
             let category = document.querySelector('#category');
             let subcategory = document.querySelector('#subcategory')
+            let extraCategory = document.querySelector('#extraCategory')
 
-            console.log(category)
-
-            category.addEventListener('change' , () => {
-                let categoryId = category.value
-                // console.log(categoryId)
-                subcategory.innerHTML = `<option>--- select subcategory ---</option>`
-                fetch(`/extraCategory/subcategory?category=${categoryId}`)
+            category.addEventListener('change',() =>{
+                let categoryId = category.value;
+                // console.log("categoryId : " , categoryId);
+                subcategory.innerHTML = `<option>---- Select Subcategory ----</option>`;
+                fetch(`/product/subcategory?category=${categoryId}`)
                 .then(res => res.json())
                 .then(data => {
-                    // console.log(data.subcategories)
-                    data.subcategories.forEach(value => {
-                        let option = document.createElement('option');
-                        option.value = value._id
+                    console.log(data.subcategories)
+                    data.subcategories.forEach(value=> {
+                        let option = document.createElement('option')
+                        option.value = value._id;
                         option.innerHTML = value.subcategory;
-                        subcategory.append(option);
+                        subcategory.append(option)
                     });
                 })
                 .catch(err => console.log(err));
-            })
+            }) 
 
+            subcategory.addEventListener('change' , ()=>{
+                let subcategoryId = subcategory.value;
+                console.log(subcategoryId);
+                extraCategory.innerHTML = `<option>---- Select ExtraCategory ----</option>`
+                fetch(`/product/extraCategory?subcategory=${subcategoryId}`)
+                .then(res  => res.json())
+                .then(data => {
+                    // console.log(data.extraCategories)
+                    data.extraCategories.forEach(value =>{
+                        let option = document.createElement('option')
+                        option.value = value._id;
+                        option.innerHTML = value.extraCategory;
+                        extraCategory.append(option)
+                    })
+                })
+            })
         })
-    </script> -->
+    </script>

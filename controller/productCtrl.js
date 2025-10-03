@@ -5,6 +5,30 @@ const productModel = require('../model/productModel')
 const path = require('path')
 const fs = require('fs')
 
+module.exports.subcategoryDependent = async(req , res) => {
+    try{
+        // console.log(req.query.category)
+        const subcategories = await subcategoryModel.find({category : req.query.category})
+        return res.json({subcategories : subcategories , message : "Success"})
+
+    }catch(err){
+        console.log(err)
+        return res.redirect('/admin')
+    }
+}
+
+module.exports.extraCategoryDependent = async(req , res) => {
+    try{
+        console.log(req.query.subcategory)
+        const extraCategories = await extraCategoryModel.find({subcategory : req.query.subcategory})
+        // console.log(extraCategories)
+        return res.json({extraCategories : extraCategories , message : "success"})
+    }catch(err){
+        console.log(err)
+        return res.redirect('/admin')
+    }
+}
+
 module.exports.addProductPage = async(req , res) => {
     try{
         // console.log("addProductPage")
